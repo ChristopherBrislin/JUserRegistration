@@ -26,20 +26,17 @@ public class Main extends Thread{
 	public static String SMTP_PORT; 
 	//private static String CONF_VERSION;
 	public static Boolean DEBUG;
-	
-	
+	public static String KEYSTORE_PASS;
+	public static String TRUSTSTORE_PASS;
 
 	public static void main(String[] args) {
 		
 		// boolean register = true;
-	    File currentDir = new File("");
-		ConfLoader confLoader = new ConfLoader();
-		confLoader.loadConfig(currentDir.getAbsolutePath()+"/config.properties");
-		System.setProperty("javax.net.ssl.keyStore", currentDir.getAbsolutePath()+"/ServerKeyStore.jks");
-	    System.setProperty("javax.net.ssl.keyStorePassword", "extra260");
-	   System.setProperty("javax.net.ssl.trustStore", currentDir.getAbsolutePath()+"/ClientKeyStore.jks");
-	   System.setProperty("javax.net.ssl.trustStorePassword", "extra260");
-		
+	   
+		 File currentDir = new File("");
+			ConfLoader confLoader = new ConfLoader();
+			confLoader.loadConfig(currentDir.getAbsolutePath()+"/config.properties");
+			
 
 		DB_USERNAME = confLoader.readConfig("DATABASE_USERNAME");
 		DB_PASSWORD = confLoader.readConfig("DATABASE_PASS");
@@ -57,9 +54,15 @@ public class Main extends Thread{
 		SEND_EMAIL_PASS =confLoader.readConfig("SEND_EMAIL_PASS");;
 		SMTP_HOST = confLoader.readConfig("SMTP_HOST");; 
 		SMTP_PORT= confLoader.readConfig("SMTP_PORT"); 
-		
+		KEYSTORE_PASS = confLoader.readConfig("KEYSTORE_PASS");
+		TRUSTSTORE_PASS = confLoader.readConfig("TRUSTSTORE_PASS");
 
 		DEBUG = Boolean.parseBoolean(confLoader.readConfig("DEBUG"));
+		
+		System.setProperty("javax.net.ssl.keyStore", currentDir.getAbsolutePath()+"/ServerKeyStore.jks");
+	    System.setProperty("javax.net.ssl.keyStorePassword", KEYSTORE_PASS);
+	   System.setProperty("javax.net.ssl.trustStore", currentDir.getAbsolutePath()+"/ClientKeyStore.jks");
+	   System.setProperty("javax.net.ssl.trustStorePassword", TRUSTSTORE_PASS);
 		
 		EchoMultiServer server = new EchoMultiServer();
 		//System.out.println()
